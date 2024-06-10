@@ -30,6 +30,6 @@ public class User {
     @Column(nullable = false)
     private String lastName;
     private String shippingAddress;
-    @Column(name = "is_deleted", nullable = false)
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 }
