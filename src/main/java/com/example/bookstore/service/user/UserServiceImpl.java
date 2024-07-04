@@ -28,12 +28,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.toModel(requestDto);
         Set<Role> roles = new HashSet<>();
-        Role defaultRole = roleRepository.findByName(Role.RoleName.ROLE_USER);
-        if (requestDto.getEmail().contains("admin")) {
-            roles.add(roleRepository.findByName(Role.RoleName.ROLE_ADMIN));
-        } else {
-            roles.add(defaultRole);
-        }
+        roles.add(roleRepository.findByName(Role.RoleName.ROLE_USER));
         user.setRoles(roles);
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
