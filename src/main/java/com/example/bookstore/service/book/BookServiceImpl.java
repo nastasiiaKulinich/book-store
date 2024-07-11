@@ -11,7 +11,6 @@ import com.example.bookstore.repository.book.BookSpecificationBuilder;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -60,9 +59,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> search(BookSearchParametersDto searchParametersDto) {
         Specification<Book> bookSpecification = bookSpecificationBuilder.build(searchParametersDto);
-        return bookRepository.findAll((Sort) bookSpecification)
+        return bookRepository.findAll(bookSpecification)
                 .stream()
-                .map(bookMapper::toDto)
+                .map((Object book) -> bookMapper.toDto((Book) book))
                 .toList();
     }
 }

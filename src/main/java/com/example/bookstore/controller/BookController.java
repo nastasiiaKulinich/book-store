@@ -35,7 +35,7 @@ public class BookController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all books", description = "Get a list of available books")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('USER')")
     public List<BookDto> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
@@ -43,7 +43,7 @@ public class BookController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get a book by id", description = "Get a book by id")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('USER')")
     public BookDto getBookById(@PathVariable @Positive Long id) {
         return bookService.findById(id);
     }
@@ -51,7 +51,7 @@ public class BookController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book", description = "Create a new book")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
     }
@@ -59,7 +59,7 @@ public class BookController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update a book by id", description = "Update a book by id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public BookDto updateBookById(@PathVariable @Positive Long id,
                               @RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.updateById(id, requestDto);
@@ -68,7 +68,7 @@ public class BookController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete a book by id", description = "Delete a book by id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteById(@PathVariable @Positive Long id) {
         bookService.deleteById(id);
     }
@@ -77,7 +77,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Search books by parameters",
             description = "Get a list of books by the entered parameters")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('USER')")
     public List<BookDto> search(BookSearchParametersDto searchParameters) {
         return bookService.search(searchParameters);
     }
