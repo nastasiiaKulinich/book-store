@@ -1,6 +1,7 @@
 package com.example.bookstore.controller;
 
 import com.example.bookstore.dto.book.BookDto;
+import com.example.bookstore.dto.book.BookDtoWithoutCategoryIds;
 import com.example.bookstore.dto.book.BookSearchParametersDto;
 import com.example.bookstore.dto.book.CreateBookRequestDto;
 import com.example.bookstore.service.book.BookService;
@@ -36,7 +37,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all books", description = "Get a list of available books")
     @PreAuthorize("hasRole('USER')")
-    public List<BookDto> getAll(Pageable pageable) {
+    public List<BookDtoWithoutCategoryIds> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
