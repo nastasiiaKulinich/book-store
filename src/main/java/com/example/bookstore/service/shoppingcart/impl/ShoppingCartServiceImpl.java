@@ -9,6 +9,7 @@ import com.example.bookstore.mapper.CartItemMapper;
 import com.example.bookstore.mapper.ShoppingCartMapper;
 import com.example.bookstore.model.CartItem;
 import com.example.bookstore.model.ShoppingCart;
+import com.example.bookstore.model.User;
 import com.example.bookstore.repository.cartitem.CartItemRepository;
 import com.example.bookstore.repository.shoppingcart.ShoppingCartRepository;
 import com.example.bookstore.service.shoppingcart.ShoppingCartService;
@@ -56,6 +57,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void removeCartItem(Long cartItemId) {
         CartItem cartItem = getCartItemById(cartItemId);
         cartItemRepository.delete(cartItem);
+    }
+
+    @Override
+    public void registerNewShoppingCart(User user) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        shoppingCartRepository.save(shoppingCart);
     }
 
     private ShoppingCart getShoppingCartByUserId(Long id) {
