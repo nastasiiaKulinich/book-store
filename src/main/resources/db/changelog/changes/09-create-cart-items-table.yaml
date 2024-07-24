@@ -18,16 +18,14 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     foreignKeyName: fk_cart_items_carts
-                    referencedTableName: shopping_carts
-                    referencedColumnNames: id
+                    references: shopping_carts(id)
                     nullable: false
               - column:
                   name: book_id
                   type: bigint
                   constraints:
                     foreignKeyName: fk_cart_items_books
-                    referencedTableName: books
-                    referencedColumnNames: id
+                    references: books(id)
                     nullable: false
               - column:
                   name: quantity
@@ -40,3 +38,7 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
+        - addUniqueConstraint:
+            tableName: cart_items
+            columnNames: book_id, shopping_cart_id
+            constraintName: uk_cart_items_book_id_shopping_cart_id
