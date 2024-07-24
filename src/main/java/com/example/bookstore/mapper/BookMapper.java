@@ -8,6 +8,7 @@ import com.example.bookstore.model.Book;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {
@@ -20,5 +21,12 @@ public interface BookMapper {
     @AfterMapping
     default void setCategoriesIds(@MappingTarget BookDto bookDto, Book book) {
         bookDto.setCategories(book.getCategories());
+    }
+
+    @Named("bookFromId")
+    default Book bookFromId(Long id) {
+        Book book = new Book();
+        book.setId(id);
+        return book;
     }
 }
