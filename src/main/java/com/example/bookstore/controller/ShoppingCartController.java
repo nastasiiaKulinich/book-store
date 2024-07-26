@@ -1,6 +1,5 @@
 package com.example.bookstore.controller;
 
-import com.example.bookstore.dto.cartitem.CartItemDto;
 import com.example.bookstore.dto.cartitem.CreateCartItemRequestDto;
 import com.example.bookstore.dto.cartitem.UpdateCartItemRequestDto;
 import com.example.bookstore.dto.shoppingcart.ShoppingCartDto;
@@ -56,7 +55,7 @@ public class ShoppingCartController {
     @Operation(summary = "Update a cart item",
             description = "Update quantity of a book in the shopping cart")
     @PreAuthorize("hasRole('USER')")
-    public CartItemDto updateCartItem(
+    public ShoppingCartDto updateCartItem(
             Authentication authentication,
             @PathVariable Long cartItemId,
             @RequestBody @Valid UpdateCartItemRequestDto cartItemRequestDto) {

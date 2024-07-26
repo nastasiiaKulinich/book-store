@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findRoleByName(Role.RoleName.ADMIN));
         user.setRoles(roles);
-        User savedUser = userRepository.save(user);
-        shoppingCartService.registerNewShoppingCart(savedUser);
-        return userMapper.toDto(savedUser);
+        userRepository.save(user);
+        shoppingCartService.registerNewShoppingCart(user);
+        return userMapper.toDto(user);
     }
 }

@@ -2,6 +2,7 @@ package com.example.bookstore.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
@@ -24,7 +25,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
