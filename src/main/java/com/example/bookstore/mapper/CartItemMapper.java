@@ -6,16 +6,12 @@ import com.example.bookstore.dto.cartitem.CreateCartItemRequestDto;
 import com.example.bookstore.model.CartItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
-@Mapper(config = MapperConfig.class, uses = BookMapper.class)
+@Mapper(config = MapperConfig.class)
 public interface CartItemMapper {
-    @Mappings({
-            @Mapping(target = "bookId", source = "book.id"),
-            @Mapping(target = "bookTitle", source = "book.title")
-    })
+    @Mapping(source = "book.id", target = "bookId")
+    @Mapping(source = "book.title", target = "bookTitle")
     CartItemDto toDto(CartItem cartItem);
 
-    @Mapping(target = "book", source = "bookId", qualifiedByName = "bookFromId")
     CartItem toEntity(CreateCartItemRequestDto cartItemRequestDto);
 }
