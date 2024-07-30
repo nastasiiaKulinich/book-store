@@ -38,7 +38,3 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
-        - addUniqueConstraint:
-            tableName: cart_items
-            columnNames: book_id, shopping_cart_id
-            constraintName: uk_cart_items_book_id_shopping_cart_id

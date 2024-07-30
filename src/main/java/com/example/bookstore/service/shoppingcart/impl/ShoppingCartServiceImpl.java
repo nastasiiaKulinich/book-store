@@ -42,9 +42,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Book book = bookRepository.findById(cartItemRequestDto.getBookId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find book by id = " + cartItemRequestDto.getBookId()));
-
-        addOrUpdateCartItem(shoppingCart, book, cartItemRequestDto);
-
+        shoppingCart.getCartItems().stream()
+                .filter(item -> item.getBook().getId().equals(cartItemRequestDto.getBookId()))
+                .findFirst()
+                .ifPresentOrElse(item -> {
+                    item.setQuantity(item.getQuantity() + cartItemRequestDto.getQuantity());
+                    cartItemRepository.save(item); },
+                        () -> addCartItem(shoppingCart, book, cartItemRequestDto));
+        shoppingCartRepository.save(shoppingCart);
         return shoppingCartMapper.toDto(shoppingCart);
     }
 
@@ -88,22 +93,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         );
     }
 
-    private void addOrUpdateCartItem(ShoppingCart shoppingCart,
+    private void addCartItem(
+            ShoppingCart shoppingCart,
             Book book, CreateCartItemRequestDto cartItemRequestDto) {
-        CartItem existingCartItem = shoppingCart.getCartItems().stream()
-                .filter(item -> item.getBook().getId().equals(book.getId()))
-                .findFirst()
-                .orElse(null);
-
-        if (existingCartItem != null) {
-            existingCartItem.setQuantity(existingCartItem.getQuantity()
-                    + cartItemRequestDto.getQuantity());
-            cartItemRepository.save(existingCartItem);
-        } else {
-            CartItem newCartItem = cartItemMapper.toEntity(cartItemRequestDto);
-            newCartItem.setShoppingCart(shoppingCart);
-            newCartItem.setBook(book);
-            cartItemRepository.save(newCartItem);
-        }
+        CartItem newCartItem = cartItemMapper.toEntity(cartItemRequestDto);
+        newCartItem.setBook(book);
+        newCartItem.setQuantity(cartItemRequestDto.getQuantity());
+        shoppingCart.addItemToCart(newCartItem);
     }
 }
