@@ -7,10 +7,12 @@ import com.example.bookstore.dto.book.CreateBookRequestDto;
 import com.example.bookstore.model.Book;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {
+    @Mapping(source = "categories", target = "categories")
     BookDto toDto(Book book);
 
     Book toModel(CreateBookRequestDto requestDto);

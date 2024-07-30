@@ -8,6 +8,7 @@ import com.example.bookstore.model.Role;
 import com.example.bookstore.model.User;
 import com.example.bookstore.repository.role.RoleRepository;
 import com.example.bookstore.repository.user.UserRepository;
+import com.example.bookstore.service.shoppingcart.ShoppingCartService;
 import com.example.bookstore.service.user.UserService;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ShoppingCartService shoppingCartService;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto) {
@@ -34,7 +36,8 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findRoleByName(Role.RoleName.USER));
         user.setRoles(roles);
-        User savedUser = userRepository.save(user);
-        return userMapper.toDto(savedUser);
+        userRepository.save(user);
+        shoppingCartService.registerNewShoppingCart(user);
+        return userMapper.toDto(user);
     }
 }
