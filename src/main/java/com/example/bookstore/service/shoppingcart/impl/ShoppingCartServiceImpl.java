@@ -45,9 +45,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.getCartItems().stream()
                 .filter(item -> item.getBook().getId().equals(cartItemRequestDto.getBookId()))
                 .findFirst()
-                .ifPresentOrElse(item -> {
-                    item.setQuantity(item.getQuantity() + cartItemRequestDto.getQuantity());
-                    cartItemRepository.save(item); },
+                .ifPresentOrElse(item -> item.setQuantity(
+                        item.getQuantity() + cartItemRequestDto.getQuantity()),
                         () -> addCartItem(shoppingCart, book, cartItemRequestDto));
         shoppingCartRepository.save(shoppingCart);
         return shoppingCartMapper.toDto(shoppingCart);
@@ -98,7 +97,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             Book book, CreateCartItemRequestDto cartItemRequestDto) {
         CartItem newCartItem = cartItemMapper.toEntity(cartItemRequestDto);
         newCartItem.setBook(book);
-        newCartItem.setQuantity(cartItemRequestDto.getQuantity());
         shoppingCart.addItemToCart(newCartItem);
     }
 }
