@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,15 +38,15 @@ public class Order {
     private User user;
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, unique = true)
-    private Status status;
+    private Status status = Status.PENDING;
     @Column(name = "total", nullable = false)
     private BigDecimal total;
-    @Column(name = "order_date", nullable = false)
-    private LocalDate orderDate;
+    @Column(name = "order_date", nullable = false, columnDefinition = "TIMESTAMP")
+    private LocalDate orderDate = LocalDate.now();
     @Column(name = "shipping_address", nullable = false)
     private String shippingAddress;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private Set<OrderItem> orderItems = new HashSet<>();
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
     @Column(name = "is_deleted", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean deleted;
 

@@ -7,12 +7,16 @@ import com.example.bookstore.model.OrderItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(config = MapperConfig.class)
 public interface OrderItemMapper {
     @Mapping(target = "bookId", source = "book.id")
     OrderItemDto toDto(OrderItem orderItem);
 
-    @Mapping(target = "order", ignore = true)
-    @Mapping(target = "price", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "price", source = "book.price")
     OrderItem toEntity(CartItemDto cartItemDto);
+
+    List<OrderItemDto> toOrderItemDtoList(List<OrderItem> orderItems);
 }
