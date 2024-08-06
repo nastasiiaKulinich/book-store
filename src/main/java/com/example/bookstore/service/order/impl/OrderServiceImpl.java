@@ -27,7 +27,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderResponseDto createOrder(Long userId, CreateOrderRequestDto createOrderRequestDto) {
-        Optional<ShoppingCart> cartOptional = shoppingCartRepository.findShoppingCartByUserId(userId);
+        Optional<ShoppingCart> cartOptional =
+                shoppingCartRepository.findShoppingCartByUserId(userId);
 
         if (!cartOptional.isPresent() || cartOptional.get().getCartItems().isEmpty()) {
             throw new OrderProcessingException("Cart is empty for user: " + userId);

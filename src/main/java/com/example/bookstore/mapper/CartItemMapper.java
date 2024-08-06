@@ -2,6 +2,7 @@ package com.example.bookstore.mapper;
 
 import com.example.bookstore.config.MapperConfig;
 import com.example.bookstore.dto.cartitem.CartItemDto;
+import com.example.bookstore.dto.cartitem.CartItemDtoForOrder;
 import com.example.bookstore.dto.cartitem.CreateCartItemRequestDto;
 import com.example.bookstore.model.CartItem;
 import org.mapstruct.Mapper;
@@ -12,6 +13,11 @@ public interface CartItemMapper {
     @Mapping(source = "book.id", target = "bookId")
     @Mapping(source = "book.title", target = "bookTitle")
     CartItemDto toDto(CartItem cartItem);
+
+    @Mapping(source = "book.id", target = "bookId")
+    @Mapping(source = "book.title", target = "bookTitle")
+    @Mapping(source = "book.price", target = "bookPrice")
+    CartItemDtoForOrder toDtoForOrder(CartItem cartItem);
 
     CartItem toEntity(CreateCartItemRequestDto cartItemRequestDto);
 }

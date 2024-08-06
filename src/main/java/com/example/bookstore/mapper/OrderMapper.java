@@ -6,9 +6,9 @@ import com.example.bookstore.model.Order;
 import com.example.bookstore.model.ShoppingCart;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.InjectionStrategy;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -20,7 +20,7 @@ import org.mapstruct.NullValueCheckStrategy;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface OrderMapper {
-    @Mapping(target = "orderId", source = "id")
+    @Mapping(target = "id", source = "id")
     OrderResponseDto toUpdateDto(Order order);
 
     @Mapping(target = "id", ignore = true)
@@ -28,10 +28,12 @@ public interface OrderMapper {
     @Mapping(target = "orderItems", source = "cart.cartItems")
     Order cartToOrder(ShoppingCart cart, String shippingAddress);
 
+    @Named("toOrderDto")
     @Mapping(target = "orderDate", dateFormat = "yyyy-MM-dd HH:mm")
     @Mapping(target = "userId", source = "user.id")
     OrderResponseDto toOrderDto(Order order);
 
+    @IterableMapping(qualifiedByName = "toOrderDto")
     List<OrderResponseDto> toOrderDtoList(List<Order> orders);
 
     @AfterMapping
@@ -40,7 +42,7 @@ public interface OrderMapper {
     }
 
     @Named("total")
-    default BigDecimal getTotal(Set<CartItem> cartItems) {
+    default BigDecimal getTotal(List<CartItem> cartItems) {
         return cartItems.stream()
                 .map(i -> i.getBook().getPrice().multiply(BigDecimal.valueOf(i.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

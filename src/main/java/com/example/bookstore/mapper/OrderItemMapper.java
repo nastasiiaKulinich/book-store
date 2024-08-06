@@ -1,13 +1,12 @@
 package com.example.bookstore.mapper;
 
 import com.example.bookstore.config.MapperConfig;
-import com.example.bookstore.dto.cartitem.CartItemDto;
+import com.example.bookstore.dto.cartitem.CartItemDtoForOrder;
 import com.example.bookstore.dto.orderitem.OrderItemDto;
 import com.example.bookstore.model.OrderItem;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(config = MapperConfig.class)
 public interface OrderItemMapper {
@@ -15,8 +14,8 @@ public interface OrderItemMapper {
     OrderItemDto toDto(OrderItem orderItem);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "price", source = "book.price")
-    OrderItem toEntity(CartItemDto cartItemDto);
+    @Mapping(target = "price", source = "bookPrice")
+    OrderItem toEntity(CartItemDtoForOrder cartItemDto);
 
     List<OrderItemDto> toOrderItemDtoList(List<OrderItem> orderItems);
 }
