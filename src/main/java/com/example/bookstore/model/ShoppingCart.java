@@ -10,8 +10,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
@@ -31,12 +30,16 @@ public class ShoppingCart {
     @JoinColumn(name = "id", nullable = false)
     private User user;
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartItem> cartItems = new HashSet<>();
+    private List<CartItem> cartItems;
     @Column(name = "is_deleted", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 
     public void addItemToCart(CartItem cartItem) {
         cartItem.setShoppingCart(this);
         cartItems.add(cartItem);
+    }
+
+    public void clearCart() {
+        cartItems.clear();
     }
 }
