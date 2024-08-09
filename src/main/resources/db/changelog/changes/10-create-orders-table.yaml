@@ -33,7 +33,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: order_date
-                  type: date
+                  type: timestamp
                   constraints:
                     nullable: false
               - column:

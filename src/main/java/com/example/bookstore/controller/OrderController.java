@@ -10,6 +10,7 @@ import com.example.bookstore.service.order.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +65,7 @@ public class OrderController {
     @Operation(summary = "Get all order's items",
             description = "Retrieve all order's items")
     @PreAuthorize("hasRole('USER')")
-    public List<OrderItemDto> getAllOrderItems(@PathVariable Long orderId) {
+    public List<OrderItemDto> getAllOrderItems(@PathVariable @Positive Long orderId) {
         return new ArrayList<>(orderService.getOrderById(orderId).getOrderItems());
     }
 
@@ -72,11 +73,11 @@ public class OrderController {
     @Operation(summary = "Get order item",
             description = "Retrieve a specific OrderItem within an order")
     @PreAuthorize("hasRole('USER')")
-    public OrderItemDto getOrderItem(@PathVariable Long orderId,
-                                     @PathVariable Long itemId) {
+    public OrderItemDto getOrderItem(@PathVariable @Positive Long orderId,
+                                     @PathVariable @Positive Long id) {
         return getAllOrderItems(orderId).stream()
-                .filter(item -> item.getId().equals(itemId))
+                .filter(item -> item.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Can't get item by id " + itemId));
+                .orElseThrow(() -> new EntityNotFoundException("Can't get item by id " + id));
     }
 }

@@ -5,6 +5,7 @@ import com.example.bookstore.dto.order.OrderResponseDto;
 import com.example.bookstore.dto.order.UpdateOrderRequestDto;
 import com.example.bookstore.exception.EntityNotFoundException;
 import com.example.bookstore.exception.OrderProcessingException;
+import com.example.bookstore.mapper.OrderItemMapper;
 import com.example.bookstore.mapper.OrderMapper;
 import com.example.bookstore.model.Order;
 import com.example.bookstore.model.ShoppingCart;
@@ -23,6 +24,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ShoppingCartRepository shoppingCartRepository;
     private final OrderMapper orderMapper;
+    private final OrderItemMapper orderItemMapper;
 
     @Transactional
     @Override
@@ -36,8 +38,8 @@ public class OrderServiceImpl implements OrderService {
 
         ShoppingCart cart = cartOptional.get();
         Order order = orderMapper.cartToOrder(cart, createOrderRequestDto.getShippingAddress());
-        cart.clearCart();
         orderRepository.save(order);
+        cart.clearCart();
 
         return orderMapper.toOrderDto(order);
     }

@@ -5,6 +5,7 @@ import com.example.bookstore.model.CartItem;
 import com.example.bookstore.model.Order;
 import com.example.bookstore.model.ShoppingCart;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.InjectionStrategy;
@@ -29,7 +30,6 @@ public interface OrderMapper {
     Order cartToOrder(ShoppingCart cart, String shippingAddress);
 
     @Named("toOrderDto")
-    @Mapping(target = "orderDate", dateFormat = "yyyy-MM-dd HH:mm")
     @Mapping(target = "userId", source = "user.id")
     OrderResponseDto toOrderDto(Order order);
 
@@ -39,6 +39,7 @@ public interface OrderMapper {
     @AfterMapping
     default void updateOrder(@MappingTarget Order order) {
         order.getOrderItems().forEach(oi -> oi.setOrder(order));
+        order.setOrderDate(LocalDateTime.now());
     }
 
     @Named("total")

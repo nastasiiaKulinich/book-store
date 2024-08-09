@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,7 +40,7 @@ public class Order {
     @Column(name = "total", nullable = false)
     private BigDecimal total;
     @Column(name = "order_date", nullable = false, columnDefinition = "TIMESTAMP")
-    private LocalDate orderDate = LocalDate.now();
+    private LocalDateTime orderDate = LocalDateTime.now();
     @Column(name = "shipping_address", nullable = false)
     private String shippingAddress;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
