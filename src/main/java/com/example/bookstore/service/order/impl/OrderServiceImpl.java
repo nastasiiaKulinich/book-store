@@ -3,14 +3,19 @@ package com.example.bookstore.service.order.impl;
 import com.example.bookstore.dto.order.CreateOrderRequestDto;
 import com.example.bookstore.dto.order.OrderResponseDto;
 import com.example.bookstore.dto.order.UpdateOrderRequestDto;
+import com.example.bookstore.dto.orderitem.OrderItemDto;
 import com.example.bookstore.exception.EntityNotFoundException;
 import com.example.bookstore.exception.OrderProcessingException;
 import com.example.bookstore.mapper.OrderItemMapper;
 import com.example.bookstore.mapper.OrderMapper;
 import com.example.bookstore.model.Order;
+import com.example.bookstore.model.OrderItem;
 import com.example.bookstore.model.ShoppingCart;
+import com.example.bookstore.model.User;
 import com.example.bookstore.repository.order.OrderRepository;
+import com.example.bookstore.repository.orderitem.OrderItemRepository;
 import com.example.bookstore.repository.shoppingcart.ShoppingCartRepository;
+import com.example.bookstore.repository.user.UserRepository;
 import com.example.bookstore.service.order.OrderService;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -23,6 +28,8 @@ import org.springframework.stereotype.Service;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ShoppingCartRepository shoppingCartRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final UserRepository userRepository;
     private final OrderMapper orderMapper;
     private final OrderItemMapper orderItemMapper;
 
@@ -51,12 +58,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto getOrderById(Long id) {
-        Order order = findOrderById(id);
-        return orderMapper.toOrderDto(order);
-    }
-
-    @Override
     public OrderResponseDto updateOrderStatus(
             Long userId,
             Long orderId,
@@ -64,13 +65,40 @@ public class OrderServiceImpl implements OrderService {
     ) {
         Order order = findOrderById(orderId);
         order.setStatus(requestDto.getStatus());
-        Order savedOrder = orderRepository.save(order);
-        return orderMapper.toUpdateDto(savedOrder);
+        orderRepository.save(order);
+        return orderMapper.toUpdateDto(order);
+    }
+
+    @Override
+    public List<OrderItemDto> getOrderItemsByOrderId(Long userId, Long orderId) {
+        findUserById(userId);
+        Order orderById = findOrderById(orderId);
+        return orderById.getOrderItems().stream()
+                .map(orderItemMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public OrderItemDto getOrderItemById(Long userId, Long orderId, Long itemId) {
+        findUserById(userId);
+        Order orderById = findOrderById(orderId);
+        OrderItem requiredItem = orderById.getOrderItems().stream()
+                .filter(item -> item.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Can't find order"
+                + " with orderId: " + orderId));
+        return orderItemMapper.toDto(requiredItem);
     }
 
     private Order findOrderById(Long id) {
         return orderRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find order by id = " + id)
+        );
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Can't find user by id = " + id)
         );
     }
 }

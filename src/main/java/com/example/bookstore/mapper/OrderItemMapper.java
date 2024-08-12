@@ -7,7 +7,6 @@ import com.example.bookstore.model.Order;
 import com.example.bookstore.model.OrderItem;
 import com.example.bookstore.model.ShoppingCart;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -23,8 +22,8 @@ public interface OrderItemMapper {
     default void setOrderItemsFromCart(Order order, ShoppingCart cart) {
         List<OrderItem> orderItems = cart.getCartItems().stream()
                 .map(this::toEntity)
-                .collect(Collectors.toList());
+                .toList();
         order.setOrderItems(orderItems);
-        orderItems.forEach(oi -> oi.setOrder(order));
+        orderItems.forEach(orderItem -> orderItem.setOrder(order));
     }
 }
