@@ -11,7 +11,6 @@ import com.example.bookstore.mapper.OrderMapper;
 import com.example.bookstore.model.Order;
 import com.example.bookstore.model.OrderItem;
 import com.example.bookstore.model.ShoppingCart;
-import com.example.bookstore.model.User;
 import com.example.bookstore.repository.order.OrderRepository;
 import com.example.bookstore.repository.orderitem.OrderItemRepository;
 import com.example.bookstore.repository.shoppingcart.ShoppingCartRepository;
@@ -71,34 +70,25 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderItemDto> getOrderItemsByOrderId(Long userId, Long orderId) {
-        findUserById(userId);
-        Order orderById = findOrderById(orderId);
-        return orderById.getOrderItems().stream()
+        List<OrderItem> orderItems = orderItemRepository
+                .findAllByOrderIdAndUserId(userId, orderId);
+        return orderItems.stream()
                 .map(orderItemMapper::toDto)
                 .toList();
     }
 
     @Override
     public OrderItemDto getOrderItemById(Long userId, Long orderId, Long itemId) {
-        findUserById(userId);
-        Order orderById = findOrderById(orderId);
-        OrderItem requiredItem = orderById.getOrderItems().stream()
-                .filter(item -> item.getId().equals(itemId))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Can't find order"
-                + " with orderId: " + orderId));
-        return orderItemMapper.toDto(requiredItem);
+        OrderItem orderItemById = orderItemRepository
+                .findByIdAndOrderIdAndUserId(userId, orderId, itemId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Can't find item with itemId: " + itemId));
+        return orderItemMapper.toDto(orderItemById);
     }
 
     private Order findOrderById(Long id) {
         return orderRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find order by id = " + id)
-        );
-    }
-
-    private User findUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Can't find user by id = " + id)
         );
     }
 }
