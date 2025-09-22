@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file : db.changelog.test/changes/create-books.yaml
+  - include:
+      file : db.changelog.test/changes/create-categories.yaml
+  - include:
+      file : db.changelog.test/changes/create-books-categories.yaml
