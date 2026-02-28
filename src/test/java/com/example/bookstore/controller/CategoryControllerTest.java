@@ -178,14 +178,16 @@ public class CategoryControllerTest {
     @WithMockUser(username = "user", roles = {"USER"})
     @Test
     @Sql(scripts = {
+            "classpath:database/delete-from-books-table.sql",
             "classpath:database/fill-books-table.sql",
             "classpath:database/fill-categories-table.sql",
             "classpath:database/fill-books-categories-table.sql"
     }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {
+            "classpath:database/delete-from-cart-items-table.sql",
             "classpath:database/delete-from-books-categories-table.sql",
+            "classpath:database/delete-from-books-table.sql",
             "classpath:database/delete-from-categories-table.sql",
-            "classpath:database/delete-from-books-table.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName(
             "Verify that get books by category id method is working correctly"
