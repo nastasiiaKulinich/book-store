@@ -15,13 +15,13 @@ public class ShoppingCartControllerTestUtil {
         user.setEmail("admin.doe@example.com");
         user.setPassword("securePassword");
         user.setShippingAddress("123 Main St, City, Country");
-        Role role = new Role();
-        role.setId(2L);
-        role.setName(Role.RoleName.USER);
-        Role role2 = new Role();
-        role2.setId(1L);
-        role2.setName(Role.RoleName.ADMIN);
-        user.setRoles(Set.of(role, role2));
+        Role roleUser = new Role();
+        roleUser.setId(2L);
+        roleUser.setName(Role.RoleName.USER);
+        Role roleAdmin = new Role();
+        roleAdmin.setId(1L);
+        roleAdmin.setName(Role.RoleName.ADMIN);
+        user.setRoles(Set.of(roleUser, roleAdmin));
         return user;
     }
 
@@ -40,5 +40,29 @@ public class ShoppingCartControllerTestUtil {
         cartItemDto.setBookTitle("title1");
         cartItemDto.setQuantity(13);
         return cartItemDto;
+    }
+
+    public static ShoppingCartDto getShoppingCartDtoAfterAdding() {
+        ShoppingCartDto shoppingCartDto = new ShoppingCartDto();
+        shoppingCartDto.setId(1L);
+        shoppingCartDto.setUserId(1L);
+
+        CartItemDto cartItemDto = getCartItemDto();
+        cartItemDto.setQuantity(26);
+
+        shoppingCartDto.setCartItems(Set.of(cartItemDto));
+        return shoppingCartDto;
+    }
+
+    public static ShoppingCartDto getShoppingCartDtoAfterUpdate() {
+        ShoppingCartDto shoppingCartDto = new ShoppingCartDto();
+        shoppingCartDto.setId(1L);
+        shoppingCartDto.setUserId(1L);
+
+        CartItemDto cartItemDto = getCartItemDto();
+        cartItemDto.setQuantity(5);
+
+        shoppingCartDto.setCartItems(Set.of(cartItemDto));
+        return shoppingCartDto;
     }
 }
