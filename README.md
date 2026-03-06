@@ -50,7 +50,7 @@ Users can register, explore the book catalog, add books to their shopping cart, 
 ---
 
 ## 📌 Main Entities Structure
-![Entities Structure](https://i.ibb.co/FbRvg73D/bookstore.png)
+![Entities Structure](diagrams/bookstore.png)
 
 ---
 ## 📦 Functionality
