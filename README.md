@@ -196,6 +196,11 @@ docker-compose down
 ```
 
 ---
+## 🎬 Demo Video
+You can watch a short demo of the Book Store API here:
+📌[https://youtu.be/snC92otGxpY](https://youtu.be/snC92otGxpY)
+
+---
 ## 📧 Contact
 
 * **Author:** Anastasiia Kulinich

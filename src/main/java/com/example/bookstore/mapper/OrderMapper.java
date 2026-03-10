@@ -21,7 +21,7 @@ import org.mapstruct.NullValueCheckStrategy;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface OrderMapper {
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "userId", source = "user.id")
     OrderResponseDto toUpdateDto(Order order);
 
     @Mapping(target = "id", ignore = true)
